@@ -1,2 +1,2 @@
-from .MonsterService import *
-from .PlayerService import *
+from .monsterService import *
+from .playerService import *

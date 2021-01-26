@@ -1,5 +1,6 @@
-from app.db.repositories.monsterRepository import MonsterRepository
-from app.db.repositories.monsterTypeRepository import MonsterTypeRepository
+from app.db.repositories import MonsterRepository
+from app.db.repositories import MonsterTypeRepository
+
 
 class MonsterService:
 

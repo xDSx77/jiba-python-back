@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter
 from pydantic import BaseModel
 
-from app.api.models.player import Player
+from app.db.models.player import Player
 from app.api.services import PlayerService
 
 

@@ -1,13 +1,14 @@
 from typing import List
 
-from app.api.models.player import Player
+from app.db.models.player import Player
 from app.api.routes.players import CreatePlayerRequest
+from app.db.repositories import PlayerRepository
 
 
 class PlayerService:
 
     def __init__(self):
-        pass
+        self.player_repository = PlayerRepository()
 
     def get_all_players(self) -> List[Player]:
         pass
