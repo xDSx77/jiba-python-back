@@ -1,4 +1,4 @@
-from databases import DatabaseURL
+from databases.core import DatabaseURL
 from starlette.config import Config
 from starlette.datastructures import Secret
 
@@ -9,13 +9,13 @@ config = Config(".env")
 PROJECT_NAME = "python-rpg-api"
 VERSION = "1.0.0"
 API_PREFIX = "/api"
-POSTGRES_USER = config("POSTGRES_USER", cast=str)
-POSTGRES_PASSWORD = config("POSTGRES_PASSWORD", cast=Secret)
-POSTGRES_SERVER = config("POSTGRES_SERVER", cast=str, default="db")
-POSTGRES_PORT = config("POSTGRES_PORT", cast=str, default="5432")
-POSTGRES_DB = config("POSTGRES_DB", cast=str)
+MYSQL_USER_PY = config("MYSQL_USER_PY", cast=str, default="root")
+MYSQL_PASSWORD_PY = config("MYSQL_PASSWORD_PY", cast=Secret)
+MYSQL_SERVER = config("MYSQL_SERVER", cast=str, default="db")
+MYSQL_PORT = config("MYSQL_PORT", cast=str, default="3306")
+MYSQL_DATABASE = config("MYSQL_DATABASE", cast=str)
 DATABASE_URL = config(
   "DATABASE_URL",
   cast=DatabaseURL,
-  default=f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}:{POSTGRES_PORT}/{POSTGRES_DB}"
+  default=f"mysql://{MYSQL_USER_PY}:{MYSQL_PASSWORD_PY}@{MYSQL_SERVER}:{MYSQL_PORT}/{MYSQL_DATABASE}"
 )
