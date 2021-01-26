@@ -1,168 +1,588 @@
-CREATE DATABASE  IF NOT EXISTS `java-rpg-api` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `java-rpg-api`;
--- MySQL dump 10.13  Distrib 8.0.20, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: java-rpg-api
--- ------------------------------------------------------
--- Server version	8.0.20
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Table structure for table `armor`
+-- PostgreSQL database dump
 --
 
-DROP TABLE IF EXISTS `armor`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `armor` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  `protection` int NOT NULL DEFAULT '1',
-  `price` int NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- Dumped from database version 12.3
+-- Dumped by pg_dump version 12.2
+
+-- Started on 2021-01-26 17:06:30
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
 
 --
--- Table structure for table `monster`
+-- TOC entry 2999 (class 1262 OID 17017)
+-- Name: python-rpg-api; Type: DATABASE; Schema: -; Owner: postgres
 --
 
-DROP TABLE IF EXISTS `monster`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `monster` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `monster_type_id` int NOT NULL,
-  `hp` int NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`),
-  KEY `monster_type_id_idx` (`monster_type_id`),
-  CONSTRAINT `monster_type_id` FOREIGN KEY (`monster_type_id`) REFERENCES `monster_type` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+CREATE DATABASE "python-rpg-api" WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'French_France.1252' LC_CTYPE = 'French_France.1252';
+
+
+ALTER DATABASE "python-rpg-api" OWNER TO postgres;
+
+\connect -reuse-previous=on "dbname='python-rpg-api'"
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
 
 --
--- Table structure for table `monster_type`
+-- TOC entry 207 (class 1259 OID 17102)
+-- Name: armor; Type: TABLE; Schema: public; Owner: postgres
 --
 
-DROP TABLE IF EXISTS `monster_type`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `monster_type` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  `hp_max` int NOT NULL DEFAULT '1',
-  `damage` int NOT NULL DEFAULT '1',
-  `xp_value` int NOT NULL DEFAULT '1',
-  `gold_value` int NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+CREATE TABLE public.armor (
+    id integer NOT NULL,
+    name character varying(50)[] NOT NULL,
+    protection integer DEFAULT 1 NOT NULL,
+    price integer DEFAULT 1 NOT NULL
+);
+
+
+ALTER TABLE public.armor OWNER TO postgres;
 
 --
--- Table structure for table `player`
+-- TOC entry 206 (class 1259 OID 17100)
+-- Name: armor_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-DROP TABLE IF EXISTS `player`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `player` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) NOT NULL,
-  `level` int NOT NULL DEFAULT '1',
-  `xp` int NOT NULL DEFAULT '0',
-  `xp_max` int NOT NULL DEFAULT '100',
-  `hp` int NOT NULL DEFAULT '10',
-  `hp_max` int NOT NULL DEFAULT '10',
-  `gold` int NOT NULL DEFAULT '0',
-  `weapon_id` int DEFAULT NULL,
-  `armor_id` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `username_UNIQUE` (`username`),
-  KEY `armor_id_idx` (`armor_id`),
-  KEY `weapon_id_idx` (`weapon_id`),
-  CONSTRAINT `armor_id` FOREIGN KEY (`armor_id`) REFERENCES `armor` (`id`),
-  CONSTRAINT `weapon_id` FOREIGN KEY (`weapon_id`) REFERENCES `weapon` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+CREATE SEQUENCE public.armor_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.armor_id_seq OWNER TO postgres;
 
 --
--- Table structure for table `player_quest`
+-- TOC entry 3000 (class 0 OID 0)
+-- Dependencies: 206
+-- Name: armor_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-DROP TABLE IF EXISTS `player_quest`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `player_quest` (
-  `player_id` int NOT NULL,
-  `quest_id` int NOT NULL,
-  `progress` int NOT NULL DEFAULT '0',
-  `id` int NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_player_quest` (`player_id`,`quest_id`),
-  KEY `player_id_idx` (`player_id`),
-  KEY `quest_id_idx` (`quest_id`),
-  CONSTRAINT `player_id` FOREIGN KEY (`player_id`) REFERENCES `player` (`id`),
-  CONSTRAINT `quest_id` FOREIGN KEY (`quest_id`) REFERENCES `quest` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+ALTER SEQUENCE public.armor_id_seq OWNED BY public.armor.id;
+
 
 --
--- Table structure for table `quest`
+-- TOC entry 205 (class 1259 OID 17087)
+-- Name: monster; Type: TABLE; Schema: public; Owner: postgres
 --
 
-DROP TABLE IF EXISTS `quest`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `quest` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  `monster_type_id` int NOT NULL,
-  `goal` int NOT NULL DEFAULT '1',
-  `xp_value` int NOT NULL DEFAULT '1',
-  `gold_value` int NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name_UNIQUE` (`name`),
-  KEY `monster_type_id_idx` (`monster_type_id`),
-  CONSTRAINT `quest_monster_type_id` FOREIGN KEY (`monster_type_id`) REFERENCES `monster_type` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+CREATE TABLE public.monster (
+    id integer NOT NULL,
+    monster_type_id integer NOT NULL,
+    hp integer DEFAULT 1 NOT NULL
+);
+
+
+ALTER TABLE public.monster OWNER TO postgres;
 
 --
--- Table structure for table `weapon`
+-- TOC entry 204 (class 1259 OID 17085)
+-- Name: monster_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-DROP TABLE IF EXISTS `weapon`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `weapon` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  `damage` int NOT NULL DEFAULT '1',
-  `price` int NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+CREATE SEQUENCE public.monster_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-30 17:19:19
+ALTER TABLE public.monster_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3001 (class 0 OID 0)
+-- Dependencies: 204
+-- Name: monster_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.monster_id_seq OWNED BY public.monster.id;
+
+
+--
+-- TOC entry 203 (class 1259 OID 17072)
+-- Name: monster_type; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.monster_type (
+    id integer NOT NULL,
+    name character varying(50)[] NOT NULL,
+    hp_max integer DEFAULT 1 NOT NULL,
+    damage integer DEFAULT 1 NOT NULL,
+    xp_value integer DEFAULT 1 NOT NULL,
+    gold_value integer DEFAULT 1 NOT NULL
+);
+
+
+ALTER TABLE public.monster_type OWNER TO postgres;
+
+--
+-- TOC entry 216 (class 1259 OID 17206)
+-- Name: monster_info; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW public.monster_info AS
+ SELECT monster.id,
+    monster.monster_type_id,
+    monster.hp,
+    monster_type.hp_max,
+    monster_type.gold_value,
+    monster_type.xp_value,
+    monster_type.name
+   FROM (public.monster
+     JOIN public.monster_type ON ((monster.monster_type_id = monster_type.id)));
+
+
+ALTER TABLE public.monster_info OWNER TO postgres;
+
+--
+-- TOC entry 202 (class 1259 OID 17070)
+-- Name: monster_type_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.monster_type_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.monster_type_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3002 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: monster_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.monster_type_id_seq OWNED BY public.monster_type.id;
+
+
+--
+-- TOC entry 213 (class 1259 OID 17153)
+-- Name: player; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.player (
+    id integer NOT NULL,
+    username character varying(50)[] NOT NULL,
+    level integer DEFAULT 1 NOT NULL,
+    xp integer DEFAULT 0 NOT NULL,
+    xp_max integer DEFAULT 100 NOT NULL,
+    hp integer DEFAULT 10 NOT NULL,
+    hp_max integer DEFAULT 10 NOT NULL,
+    gold integer DEFAULT 0 NOT NULL,
+    weapon_id integer,
+    armor_id integer
+);
+
+
+ALTER TABLE public.player OWNER TO postgres;
+
+--
+-- TOC entry 212 (class 1259 OID 17151)
+-- Name: player_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.player_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.player_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3003 (class 0 OID 0)
+-- Dependencies: 212
+-- Name: player_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.player_id_seq OWNED BY public.player.id;
+
+
+--
+-- TOC entry 215 (class 1259 OID 17182)
+-- Name: player_quest; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.player_quest (
+    player_id integer NOT NULL,
+    quest_id integer NOT NULL,
+    progress integer DEFAULT 0 NOT NULL,
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.player_quest OWNER TO postgres;
+
+--
+-- TOC entry 214 (class 1259 OID 17180)
+-- Name: player_quest_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.player_quest_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.player_quest_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3004 (class 0 OID 0)
+-- Dependencies: 214
+-- Name: player_quest_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.player_quest_id_seq OWNED BY public.player_quest.id;
+
+
+--
+-- TOC entry 211 (class 1259 OID 17132)
+-- Name: quest; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.quest (
+    id integer NOT NULL,
+    name character varying(50)[] NOT NULL,
+    monster_type_id integer NOT NULL,
+    goal integer DEFAULT 1 NOT NULL,
+    xp_value integer DEFAULT 1 NOT NULL,
+    gold_value integer DEFAULT 1 NOT NULL
+);
+
+
+ALTER TABLE public.quest OWNER TO postgres;
+
+--
+-- TOC entry 210 (class 1259 OID 17130)
+-- Name: quest_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.quest_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.quest_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3005 (class 0 OID 0)
+-- Dependencies: 210
+-- Name: quest_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.quest_id_seq OWNED BY public.quest.id;
+
+
+--
+-- TOC entry 209 (class 1259 OID 17115)
+-- Name: weapon; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.weapon (
+    id integer NOT NULL,
+    name character varying(50)[] NOT NULL,
+    damage integer DEFAULT 1 NOT NULL,
+    price integer DEFAULT 1 NOT NULL
+);
+
+
+ALTER TABLE public.weapon OWNER TO postgres;
+
+--
+-- TOC entry 208 (class 1259 OID 17113)
+-- Name: weapon_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.weapon_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.weapon_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3006 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: weapon_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.weapon_id_seq OWNED BY public.weapon.id;
+
+
+--
+-- TOC entry 2816 (class 2604 OID 17105)
+-- Name: armor id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.armor ALTER COLUMN id SET DEFAULT nextval('public.armor_id_seq'::regclass);
+
+
+--
+-- TOC entry 2814 (class 2604 OID 17090)
+-- Name: monster id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.monster ALTER COLUMN id SET DEFAULT nextval('public.monster_id_seq'::regclass);
+
+
+--
+-- TOC entry 2809 (class 2604 OID 17075)
+-- Name: monster_type id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.monster_type ALTER COLUMN id SET DEFAULT nextval('public.monster_type_id_seq'::regclass);
+
+
+--
+-- TOC entry 2826 (class 2604 OID 17156)
+-- Name: player id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.player ALTER COLUMN id SET DEFAULT nextval('public.player_id_seq'::regclass);
+
+
+--
+-- TOC entry 2834 (class 2604 OID 17186)
+-- Name: player_quest id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.player_quest ALTER COLUMN id SET DEFAULT nextval('public.player_quest_id_seq'::regclass);
+
+
+--
+-- TOC entry 2822 (class 2604 OID 17135)
+-- Name: quest id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.quest ALTER COLUMN id SET DEFAULT nextval('public.quest_id_seq'::regclass);
+
+
+--
+-- TOC entry 2819 (class 2604 OID 17118)
+-- Name: weapon id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.weapon ALTER COLUMN id SET DEFAULT nextval('public.weapon_id_seq'::regclass);
+
+
+--
+-- TOC entry 2842 (class 2606 OID 17112)
+-- Name: armor armor_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.armor
+    ADD CONSTRAINT armor_name_key UNIQUE (name);
+
+
+--
+-- TOC entry 2844 (class 2606 OID 17110)
+-- Name: armor armor_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.armor
+    ADD CONSTRAINT armor_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2840 (class 2606 OID 17092)
+-- Name: monster monster_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.monster
+    ADD CONSTRAINT monster_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2836 (class 2606 OID 17094)
+-- Name: monster_type monster_type_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.monster_type
+    ADD CONSTRAINT monster_type_name_key UNIQUE (name);
+
+
+--
+-- TOC entry 2838 (class 2606 OID 17084)
+-- Name: monster_type monster_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.monster_type
+    ADD CONSTRAINT monster_type_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2854 (class 2606 OID 17167)
+-- Name: player player_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.player
+    ADD CONSTRAINT player_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2858 (class 2606 OID 17188)
+-- Name: player_quest player_quest_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.player_quest
+    ADD CONSTRAINT player_quest_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2860 (class 2606 OID 17190)
+-- Name: player_quest player_quest_player_id_quest_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.player_quest
+    ADD CONSTRAINT player_quest_player_id_quest_id_key UNIQUE (player_id, quest_id);
+
+
+--
+-- TOC entry 2856 (class 2606 OID 17169)
+-- Name: player player_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.player
+    ADD CONSTRAINT player_username_key UNIQUE (username);
+
+
+--
+-- TOC entry 2850 (class 2606 OID 17145)
+-- Name: quest quest_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.quest
+    ADD CONSTRAINT quest_name_key UNIQUE (name);
+
+
+--
+-- TOC entry 2852 (class 2606 OID 17143)
+-- Name: quest quest_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.quest
+    ADD CONSTRAINT quest_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2846 (class 2606 OID 17127)
+-- Name: weapon weapon_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.weapon
+    ADD CONSTRAINT weapon_name_key UNIQUE (name);
+
+
+--
+-- TOC entry 2848 (class 2606 OID 17125)
+-- Name: weapon weapon_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.weapon
+    ADD CONSTRAINT weapon_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2861 (class 2606 OID 17095)
+-- Name: monster monster_monster_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.monster
+    ADD CONSTRAINT monster_monster_type_id_fkey FOREIGN KEY (monster_type_id) REFERENCES public.monster_type(id) NOT VALID;
+
+
+--
+-- TOC entry 2864 (class 2606 OID 17175)
+-- Name: player player_armor_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.player
+    ADD CONSTRAINT player_armor_id_fkey FOREIGN KEY (armor_id) REFERENCES public.armor(id) NOT VALID;
+
+
+--
+-- TOC entry 2865 (class 2606 OID 17191)
+-- Name: player_quest player_quest_player_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.player_quest
+    ADD CONSTRAINT player_quest_player_id_fkey FOREIGN KEY (player_id) REFERENCES public.player(id) NOT VALID;
+
+
+--
+-- TOC entry 2866 (class 2606 OID 17196)
+-- Name: player_quest player_quest_quest_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.player_quest
+    ADD CONSTRAINT player_quest_quest_id_fkey FOREIGN KEY (quest_id) REFERENCES public.quest(id) NOT VALID;
+
+
+--
+-- TOC entry 2863 (class 2606 OID 17170)
+-- Name: player player_weapon_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.player
+    ADD CONSTRAINT player_weapon_id_fkey FOREIGN KEY (weapon_id) REFERENCES public.weapon(id) NOT VALID;
+
+
+--
+-- TOC entry 2862 (class 2606 OID 17146)
+-- Name: quest quest_monster_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.quest
+    ADD CONSTRAINT quest_monster_type_id_fkey FOREIGN KEY (monster_type_id) REFERENCES public.monster_type(id) NOT VALID;
+
+
+-- Completed on 2021-01-26 17:06:30
+
+--
+-- PostgreSQL database dump complete
+--
+
