@@ -1,6 +1,6 @@
-from app.db.session import session_scope
-from app.api.models.monster import Monster
-from app.db.repositories.repository import Repository
+from db.session import session_scope
+from models.monster import Monster
+from .repository import Repository
 
 
 class MonsterRepository(Repository):
