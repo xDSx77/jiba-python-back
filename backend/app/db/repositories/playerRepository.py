@@ -10,3 +10,15 @@ class PlayerRepository(Repository):
     def get_by_player_name(self, username):
         with session_scope() as session:
             return session.query(self.entityClass).filter_by(username=username).first()
+
+    def update_by_username(self, entity: Player):
+        with session_scope() as session:
+            fields_to_update = {
+                "hp": entity.hp,
+                "xp": entity.xp,
+                "level": entity.level,
+                "gold": entity.gold
+            }
+            return session.query(self.entityClass)\
+                .filter_by(username=entity.username)\
+                .update(fields_to_update)
