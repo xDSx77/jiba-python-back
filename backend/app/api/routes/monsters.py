@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 from app.api.services.monsterService import MonsterService
-from app.api.models.monster import Monster
+from app.db.models.monster import Monster
 
 router = APIRouter()
 
