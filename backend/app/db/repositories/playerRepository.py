@@ -1,6 +1,6 @@
-from app.session import session_scope
+from app.db.session import session_scope
 from .repository import Repository
-from models.player import Player
+from app.db.models.player import Player
 
 
 class PlayerRepository(Repository):

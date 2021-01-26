@@ -1,5 +1,5 @@
-from db.session import session_scope
-from models.monster import Monster
+from app.db.session import session_scope
+from app.db.models.monster import Monster
 from .repository import Repository
 
 
