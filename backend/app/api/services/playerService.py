@@ -11,13 +11,13 @@ class PlayerService:
         self.player_repository = PlayerRepository()
 
     def get_all_players(self) -> List[Player]:
-        pass
+        return self.player_repository.get_all()
 
     def create_new_player(self, create_player_request : CreatePlayerRequest) -> Player:
-        pass
+        return self.player_repository.save(create_player_request)
 
     def get_player_info(self, username: str) -> Player:
-        pass
+        return self.player_repository.get_by_username(username)
 
     def rest(self, username: str) -> Player:
         pass
