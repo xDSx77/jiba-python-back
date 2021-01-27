@@ -34,11 +34,11 @@ def test_get_players(get_players_url):
     response = requests.get(get_players_url)
     response_body = response.json()
     assert response_body["message"] == "There are 1 heroes in this world."
-    assert response_body["heroes"].len == 1
+    assert len(response_body["heroes"]) == 1
     assert response_body["heroes"][0] == "test_username (level 1)"
 
 
 def test_player_info(get_player_info_url):
-    response = requests.get(get_players_url)
+    response = requests.get(get_player_info_url)
     response_body = response.json()
     assert response_body["message"] == "test_username is a level 1 hero (0/100xp). He is broke. He feels good."
