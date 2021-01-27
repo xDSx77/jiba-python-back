@@ -1,7 +1,6 @@
 # api
 fastapi==0.63.0
 uvicorn==0.13.3
-pydantic==1.7.3
 
 # db
 psycopg2==2.8.6

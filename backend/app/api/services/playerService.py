@@ -13,31 +13,19 @@ class PlayerService:
         self.monster_repository = MonsterRepository()
 
     def get_all_players(self):
-        heroes = self.player_repository.get_all()
-        message = f"There are {len(heroes)} heroes in this world."
-        heroes_list = [f"{hero.username} (level {hero.level})" for hero in heroes]
-        return {
-            "message": message,
-            "heroes": heroes_list
-        }
+        return self.player_repository.get_all()
 
     def create_new_player(self, username: str):
         new_player = None
         if self.player_repository.get_by_username(username) is None:
             new_player = Player(username=username)
             self.player_repository.save(new_player)
-        if new_player is None:
-            return {
-                "message": "This hero already exists, find another username",
-            }
-        return {
-            "message": f"A new hero has appeared: {new_player.username}",
-        }
+        return new_player
 
-    def get_player_info(self, username: str) -> Player:
+    def get_player_info(self, username: str):
         return self.player_repository.get_by_username(username)
 
-    def rest(self, username: str) -> Player:
+    def rest(self, username: str):
         player = self.player_repository.get_by_username(username)
         updated_player = Player(player.username,
                                 player.level,
@@ -60,6 +48,8 @@ class PlayerService:
         updated_hp_max = player.hp_max
         updated_hp = player.hp
         updated_gold = player.gold
+        died = False
+        levelUp = False
 
         if updated_monster.hp <= 0:
             updated_player_xp += monster_info.xp_value
@@ -73,8 +63,10 @@ class PlayerService:
             updated_player_xp_max *= 1.8
             updated_hp_max += 5
             updated_hp = updated_hp_max
+            levelUp = True
 
         if updated_hp <= 0:
+            died = True
             updated_hp = updated_hp_max
             updated_gold = int(player.gold/2)
 
@@ -89,9 +81,14 @@ class PlayerService:
             self.monster_repository.delete_by_id(updated_monster.id)
         else:
             self.monster_repository.update_by_id(updated_monster)
+            monster_info = self.monster_info_repository.get_by_id(id)
+
         self.player_repository.update_by_username(updated_player)
 
         return {
-            "dead": updated_player.hp <= 0,
-            "killed": monster_info.hp <= 0
+            "player": updated_player,
+            "monster_info": monster_info,
+            "monster_died": updated_monster.hp <= 0,
+            "player_died": died,
+            "levelUp": levelUp
         }
