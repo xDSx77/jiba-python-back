@@ -57,26 +57,28 @@ async def get_player_info(username: str) -> Player:
     }
 
 
-@router.get("/rest/{username}")
+@router.post("/rest/{username}")
 async def rest(username: str):
     playerService = PlayerService()
     player = playerService.rest(username)
     return {
-        "message": f"Tired, {player.username} sat near the fire and took a nap. (hp {player.hp}/{player.hp_max}"
+        "message": f"Tired, {player.username} sat near the fire and took a nap (hp {player.hp}/{player.hp_max})."
     }
 
 
-@router.get("/{username}/attack/{monster_id}/")
+@router.post("/{username}/attack/{monster_id}/")
 async def attack(username: str, monster_id: int) -> object:
     playerService = PlayerService()
     attack = playerService.attack(username, monster_id)
     message = ""
-    if attack.player_died:
+    monster_info = attack["monster_info"]
+    leveled_up = attack["levelUp"]
+    if attack["player_died"]:
         message = f"{username} died fighting the terrible creature. Luckily a wizard found him and revived him, however it costed him half his purse."
-    elif attack.monster_died:
-        message = f"{username} killed the creature and found {attack.monster_info.gold_value} gold coins on its remains(+{attack.monster_info.xp}xp)." + "The hero level up!" if levelUp else ""
+    elif attack["monster_died"]:
+        message = f"{username} killed the creature and found {monster_info.gold_value} gold coins on its remains(+{monster_info.xp}xp)." + "The hero level up!" if leveled_up else ""
     else:
-        message = f"{username} attacked the creature but it fought back(-{attack.monster_info.damage}hp)."
+        message = f"{username} attacked the creature but it fought back(-{monster_info.damage}hp)."
     return {
         "message": message
     }

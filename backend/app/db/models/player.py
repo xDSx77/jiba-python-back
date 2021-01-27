@@ -17,8 +17,8 @@ class Player(Base):
     hp = Column(Integer, nullable=False)
     hp_max = Column(Integer, nullable=False)
     gold = Column(Integer, nullable=False)
-    weapon_id = Column(ForeignKey('weapon.id'))
-    armor_id = Column(ForeignKey('armor.id'))
+    weapon_id = Column(ForeignKey(Weapon.id))
+    armor_id = Column(ForeignKey(Armor.id))
 
     def __init__(self, username, level=1, xp=0, xp_max=100, hp=10, hp_max=10, gold=0, weapon_id=None, armor_id=None):
         self.username = username
