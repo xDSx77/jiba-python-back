@@ -31,7 +31,7 @@ class PlayerService:
                                 player.level,
                                 player.xp,
                                 player.xp_max,
-                                max(player.hp + 5, player.hp_max),
+                                max(min(player.hp + 5, player.hp_max), player.hp_max),
                                 player.hp_max,
                                 player.gold)
         self.player_repository.update_by_username(updated_player)

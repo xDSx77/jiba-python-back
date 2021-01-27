@@ -1,7 +1,6 @@
 # api
 fastapi==0.63.0
 uvicorn==0.13.3
-pytest==6.2.2
 
 # db
 psycopg2==2.8.6
@@ -10,4 +9,5 @@ databases[postgresql]==0.4.1
 alembic==1.5.2
 
 #test
-requests==*
+pytest==6.2.2
+requests==2.25.1

@@ -9,4 +9,4 @@ class MonsterInfoRepository(Repository):
 
     def get_by_id(self, id: int) -> MonsterInfo:
         with session_scope() as session:
-            return session.query(self.entityClass).filter_by(id=id).first()
+            return session.query(MonsterInfo).first()
