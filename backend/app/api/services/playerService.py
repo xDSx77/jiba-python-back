@@ -1,7 +1,5 @@
 from typing import List
-
 from app.db.models.player import Player
-from app.api.routes.players import CreatePlayerRequest
 from app.db.repositories import PlayerRepository
 
 
@@ -13,8 +11,12 @@ class PlayerService:
     def get_all_players(self) -> List[Player]:
         return self.player_repository.get_all()
 
-    def create_new_player(self, create_player_request : CreatePlayerRequest) -> Player:
-        return self.player_repository.save(create_player_request)
+    def create_new_player(self, username: str) -> Player:
+        new_player = None
+        if self.player_repository.get_by_username(username) is None:
+            new_player = Player(username=username)
+            self.save(new_player)
+        return new_player
 
     def get_player_info(self, username: str) -> Player:
         return self.player_repository.get_by_username(username)
