@@ -1,4 +1,3 @@
-from typing import List
 from app.db.models.monster import Monster
 from app.db.models.player import Player
 from app.db.repositories import PlayerRepository
