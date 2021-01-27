@@ -7,7 +7,7 @@ class MonsterRepository(Repository):
     def __init__(self):
         super().__init__(Monster)
 
-    def get_by_monster_id(self, id: int):
+    def get_by_monster_id(self, id: int) -> Monster:
         with session_scope() as session:
             return session.query(self.entityClass).filter_by(id=id).first()
 
@@ -19,3 +19,8 @@ class MonsterRepository(Repository):
             return session.query(self.entityClass)\
                 .filter_by(id=entity.id)\
                 .update(fields_to_update)
+
+    def delete_by_id(self, id: int):
+        with session_scope() as session:
+            monster = self.get_by_id(id)
+            session.delete(monster)

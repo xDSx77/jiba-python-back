@@ -7,6 +7,6 @@ class MonsterTypeRepository(Repository):
     def __init__(self):
         super().__init__(MonsterType)
 
-    def get_by_id(self, id: int):
+    def get_by_id(self, id: int) -> MonsterType:
         with session_scope() as session:
             return session.query(self.entityClass).filter_by(id=id).first()

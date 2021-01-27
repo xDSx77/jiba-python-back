@@ -7,7 +7,7 @@ class PlayerRepository(Repository):
     def __init__(self):
         super().__init__(Player)
 
-    def get_by_username(self, username):
+    def get_by_username(self, username) -> Player:
         with session_scope() as session:
             return session.query(self.entityClass).filter_by(username=username).first()
 
