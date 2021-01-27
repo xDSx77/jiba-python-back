@@ -52,7 +52,7 @@ SET default_table_access_method = heap;
 
 CREATE TABLE public.armor (
     id integer NOT NULL,
-    name character varying(50)[] NOT NULL,
+    name character varying(50) NOT NULL,
     protection integer DEFAULT 1 NOT NULL,
     price integer DEFAULT 1 NOT NULL
 );
@@ -131,7 +131,7 @@ ALTER SEQUENCE public.monster_id_seq OWNED BY public.monster.id;
 
 CREATE TABLE public.monster_type (
     id integer NOT NULL,
-    name character varying(50)[] NOT NULL,
+    name varchar(50) NOT NULL,
     hp_max integer DEFAULT 1 NOT NULL,
     damage integer DEFAULT 1 NOT NULL,
     xp_value integer DEFAULT 1 NOT NULL,
@@ -192,7 +192,7 @@ ALTER SEQUENCE public.monster_type_id_seq OWNED BY public.monster_type.id;
 
 CREATE TABLE public.player (
     id integer NOT NULL,
-    username character varying(50)[] NOT NULL,
+    username character varying(50) NOT NULL,
     level integer DEFAULT 1 NOT NULL,
     xp integer DEFAULT 0 NOT NULL,
     xp_max integer DEFAULT 100 NOT NULL,
@@ -278,7 +278,7 @@ ALTER SEQUENCE public.player_quest_id_seq OWNED BY public.player_quest.id;
 
 CREATE TABLE public.quest (
     id integer NOT NULL,
-    name character varying(50)[] NOT NULL,
+    name character varying(50) NOT NULL,
     monster_type_id integer NOT NULL,
     goal integer DEFAULT 1 NOT NULL,
     xp_value integer DEFAULT 1 NOT NULL,
@@ -320,7 +320,7 @@ ALTER SEQUENCE public.quest_id_seq OWNED BY public.quest.id;
 
 CREATE TABLE public.weapon (
     id integer NOT NULL,
-    name character varying(50)[] NOT NULL,
+    name character varying(50) NOT NULL,
     damage integer DEFAULT 1 NOT NULL,
     price integer DEFAULT 1 NOT NULL
 );
@@ -586,3 +586,18 @@ ALTER TABLE ONLY public.quest
 -- PostgreSQL database dump complete
 --
 
+-- Initialize DB with default data
+INSERT INTO public.monster_type ("id", "name", "hp_max", "damage", "xp_value", "gold_value") VALUES
+    (1, 'rat', 3, 1, 3, 1),
+    (2, 'spider', 4, 2, 4, 2),
+    (3, 'wolf', 7, 5, 6, 6),
+    (4, 'dragon', 50, 14, 48, 48);
+
+INSERT INTO public.monster("id", "monster_type_id", "hp") VALUES
+    (1, 1, 3),
+    (2, 1, 3),
+    (3, 1, 3),
+    (4, 2, 4),
+    (5, 2, 4),
+    (6, 3, 7),
+    (7, 4, 50);
