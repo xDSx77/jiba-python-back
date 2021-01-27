@@ -8,22 +8,22 @@ from app.api.services import PlayerService
 
 
 class CreatePlayerRequest(BaseModel):
-    pass
+    username: str
 
 
 router = APIRouter()
 
 
 @router.get("/")
-async def get_all_players() -> List[Player]:
+async def get_all_players():
     playerService = PlayerService()
     return playerService.get_all_players()
 
 
 @router.post("/create")
-async def create_new_player(create_player_request: CreatePlayerRequest) -> Player:
+async def create_new_player(create_player_request: CreatePlayerRequest):
     playerService = PlayerService()
-    return playerService.create_new_player(create_player_request)
+    return playerService.create_new_player(create_player_request.username)
 
 
 @router.get("/info/{username}")

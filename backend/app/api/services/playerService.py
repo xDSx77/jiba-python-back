@@ -13,15 +13,27 @@ class PlayerService:
         self.monster_info_repository = MonsterInfoRepository()
         self.monster_repository = MonsterRepository()
 
-    def get_all_players(self) -> List[Player]:
-        return self.player_repository.get_all()
+    def get_all_players(self):
+        heroes = self.player_repository.get_all()
+        message = f"There are {len(heroes)} heroes in this world."
+        heroes_list = [f"{hero.username} (level {hero.level})" for hero in heroes]
+        return {
+            "message": message,
+            "heroes": heroes_list
+        }
 
-    def create_new_player(self, username: str) -> Player:
+    def create_new_player(self, username: str):
         new_player = None
         if self.player_repository.get_by_username(username) is None:
             new_player = Player(username=username)
-            self.save(new_player)
-        return new_player
+            self.player_repository.save(new_player)
+        if new_player is None:
+            return {
+                "message": "This hero already exists, find another username",
+            }
+        return {
+            "message": f"A new hero has appeared: {new_player.username}",
+        }
 
     def get_player_info(self, username: str) -> Player:
         return self.player_repository.get_by_username(username)
@@ -71,9 +83,9 @@ class PlayerService:
                                 updated_player_level,
                                 updated_player_xp,
                                 updated_player_xp_max,
-                                updated_gold,
+                                updated_hp,
                                 updated_hp_max,
-                                player.gold + monster_info.gold_value)
+                                updated_gold)
         if updated_monster.hp <= 0:
             self.monster_repository.delete_by_id(updated_monster.id)
         else:
