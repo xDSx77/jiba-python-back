@@ -147,9 +147,10 @@ ALTER TABLE public.monster_type OWNER TO postgres;
 --
 
 CREATE VIEW public.monster_info AS
- SELECT monster.id,
+ SELECT monster.id AS id,
     monster.monster_type_id,
     monster.hp,
+    monster_type.damage,
     monster_type.hp_max,
     monster_type.gold_value,
     monster_type.xp_value,
