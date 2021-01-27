@@ -1,8 +1,7 @@
-from typing import List
+from typing import Dict
 
 from fastapi import APIRouter
 from app.api.services.monsterService import MonsterService
-from app.db.models.monster import Monster
 
 router = APIRouter()
 
@@ -19,7 +18,7 @@ async def get_all_monsters():
 
 
 @router.get("/info/{monster_id}")
-async def get_monster_info(monster_id: int) -> Monster:
+async def get_monster_info(monster_id: int) -> Dict[str, str]:
     monster_info = MonsterService().get_monster_info(monster_id)
     if monster_info is None:
         return {

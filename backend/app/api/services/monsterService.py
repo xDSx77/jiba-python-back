@@ -3,6 +3,7 @@ from typing import List
 from app.db.models.monsterInfo import MonsterInfo
 from app.db.repositories.monsterInfoRepository import MonsterInfoRepository
 
+
 class MonsterService:
 
     def __init__(self):

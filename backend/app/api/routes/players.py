@@ -1,7 +1,8 @@
+from typing import Dict, Union, List
+
 from fastapi import APIRouter
 from pydantic import BaseModel
 
-from app.db.models.player import Player
 from app.api.services import PlayerService
 
 
@@ -13,7 +14,7 @@ router = APIRouter()
 
 
 @router.get("/")
-async def get_all_players():
+async def get_all_players() -> Dict[str, Union[str, List[str]]]:
     playerService = PlayerService()
     heroes = playerService.get_all_players()
     message = f"There are {len(heroes)} heroes in this world."
@@ -23,21 +24,18 @@ async def get_all_players():
         "heroes": heroes_list
     }
 
+
 @router.post("/create")
-async def create_new_player(create_player_request: CreatePlayerRequest):
+async def create_new_player(create_player_request: CreatePlayerRequest) -> Dict[str, str]:
     playerService = PlayerService()
     new_player = playerService.create_new_player(create_player_request.username)
     if new_player is None:
-        return {
-            "message": "This hero already exists, find another username.",
-        }
-    return {
-        "message": f"A new hero has appeared: {new_player.username}.",
-    }
+        return {"message": "This hero already exists, find another username."}
+    return {"message": f"A new hero has appeared: {new_player.username}."}
 
 
 @router.get("/info/{username}")
-async def get_player_info(username: str) -> Player:
+async def get_player_info(username: str) -> Dict[str, str]:
     playerService = PlayerService()
     player = playerService.get_player_info(username)
     if player is None:
@@ -58,16 +56,14 @@ async def get_player_info(username: str) -> Player:
 
 
 @router.post("/rest/{username}")
-async def rest(username: str):
+async def rest(username: str) -> Dict[str, str]:
     playerService = PlayerService()
     player = playerService.rest(username)
-    return {
-        "message": f"Tired, {player.username} sat near the fire and took a nap (hp {player.hp}/{player.hp_max})."
-    }
+    return {"message": f"Tired, {player.username} sat near the fire and took a nap (hp {player.hp}/{player.hp_max})."}
 
 
 @router.post("/{username}/attack/{monster_id}/")
-async def attack(username: str, monster_id: int) -> object:
+async def attack(username: str, monster_id: int) -> Dict[str, str]:
     playerService = PlayerService()
     attack = playerService.attack(username, monster_id)
 
@@ -79,11 +75,11 @@ async def attack(username: str, monster_id: int) -> object:
             return {"message": f"{username} kept looking for the creature but it was like it never existed."}
         return {}
 
-    message = ""
     damage_taken = attack["damage_taken"]
     xp_reward = attack["gold_reward"]
     gold_reward = attack["xp_reward"]
     leveled_up = attack["levelUp"]
+
     if attack["player_died"]:
         message = f"{username} died fighting the terrible creature. Luckily a wizard found him and revived him, however it costed him half his purse."
     elif attack["monster_died"]:

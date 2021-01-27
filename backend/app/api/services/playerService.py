@@ -1,4 +1,5 @@
-from app.db.models.monster import Monster
+from typing import Dict, List, Union
+
 from app.db.models.player import Player
 from app.db.repositories import PlayerRepository
 from app.db.repositories import MonsterInfoRepository
@@ -12,7 +13,7 @@ class PlayerService:
         self.monster_info_repository = MonsterInfoRepository()
         self.monster_repository = MonsterRepository()
 
-    def get_all_players(self):
+    def get_all_players(self) -> List[Player]:
         return self.player_repository.get_all()
 
     def create_new_player(self, username: str):
@@ -37,7 +38,7 @@ class PlayerService:
         self.player_repository.update_by_username(updated_player)
         return self.player_repository.get_by_username(username)
 
-    def attack(self, username: str, monster_id: int) -> object:
+    def attack(self, username: str, monster_id: int) -> Dict[str, Union[str, bool]]:
         player = self.player_repository.get_by_username(username)
         if player is None:
             return {"error": "Unknown player"}
@@ -77,7 +78,8 @@ class PlayerService:
             self.monster_repository.delete_by_id(monster.id)
         else:
             self.monster_repository.update_by_id(monster)
-            monster_info = self.monster_info_repository.get_by_id(monster_id)
+            # monster_info = self.monster_info_repository.get_by_id(monster_id)
+
         self.player_repository.update_by_username(player)
 
         return {
