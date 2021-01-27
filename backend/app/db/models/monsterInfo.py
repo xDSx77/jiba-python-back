@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Table
+from sqlalchemy import Column, Integer, Table
 from sqlalchemy.ext.declarative import declarative_base
 from app.db.session import Engine
 
@@ -10,7 +10,7 @@ class MonsterInfo(Base):
 
     def __init__(self, id, monster_type_id, name, hp_max, damage, xp_value, gold_value, hp):
         self.id = id
-        self. monster_type_id = monster_type_id
+        self.monster_type_id = monster_type_id
         self.name = name
         self.hp_max = hp_max
         self.damage = damage
