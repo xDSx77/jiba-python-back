@@ -592,7 +592,8 @@ INSERT INTO public.monster_type ("id", "name", "hp_max", "damage", "xp_value", "
     (1, 'rat', 3, 1, 3, 1),
     (2, 'spider', 4, 2, 4, 2),
     (3, 'wolf', 7, 5, 6, 6),
-    (4, 'dragon', 50, 14, 48, 48);
+    (4, 'dragon', 50, 14, 48, 48),
+    (5, 'chicken', 60, 0, 100, 2);
 
 INSERT INTO public.monster("id", "monster_type_id", "hp") VALUES
     (1, 1, 3),
@@ -601,4 +602,5 @@ INSERT INTO public.monster("id", "monster_type_id", "hp") VALUES
     (4, 2, 4),
     (5, 2, 4),
     (6, 3, 7),
-    (7, 4, 50);
+    (7, 4, 50),
+    (8, 5, 60);

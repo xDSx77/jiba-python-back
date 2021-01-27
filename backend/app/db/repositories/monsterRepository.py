@@ -16,11 +16,11 @@ class MonsterRepository(Repository):
             fields_to_update = {
                 "hp": entity.hp,
             }
-            return session.query(self.entityClass)\
+            return session.query(Monster)\
                 .filter_by(id=entity.id)\
                 .update(fields_to_update)
 
     def delete_by_id(self, id: int):
         with session_scope() as session:
-            monster = self.get_by_id(id)
+            monster = self.get_by_monster_id(id)
             session.delete(monster)

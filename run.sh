@@ -1,3 +1,3 @@
 #/bin/bash
-docker-compose down -f runtime-docker-compose.yml
-docker-compose up -f runtime-docker-compose.yml  --build
+docker-compose -f runtime-docker-compose.yml down
+docker-compose -f runtime-docker-compose.yml up --build 

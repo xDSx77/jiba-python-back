@@ -39,56 +39,53 @@ class PlayerService:
 
     def attack(self, username: str, monster_id: int) -> object:
         player = self.player_repository.get_by_username(username)
+        if player is None:
+            return {"error": "Unknown player"}
         monster_info = self.monster_info_repository.get_by_id(monster_id)
-        updated_monster = Monster(monster_id,
-                                  max(monster_info.hp - player.level, 0))
-        updated_player_xp = player.xp
-        updated_player_level = player.level
-        updated_player_xp_max = player.xp_max
-        updated_hp_max = player.hp_max
-        updated_hp = player.hp
-        updated_gold = player.gold
+        monster = self.monster_repository.get_by_monster_id(monster_id)
+        if monster is None:
+            return {"error": "Unknown monster"}
+        monster.hp -= player.level
+
         died = False
         levelUp = False
 
-        if updated_monster.hp <= 0:
-            updated_player_xp += monster_info.xp_value
-            updated_gold += monster_info.gold_value
+        if monster.hp <= 0:
+            player.xp += monster_info.xp_value
+            player.gold += monster_info.gold_value
         else:
-            updated_hp = max(player.hp - monster_info.damage, 0)
+            player.hp = max(player.hp - monster_info.damage, 0)
 
-        if updated_player_xp >= player.xp_max:
-            updated_player_level += 1
-            updated_player_xp -= player.xp_max
-            updated_player_xp_max *= 1.8
-            updated_hp_max += 5
-            updated_hp = updated_hp_max
+        if player.xp >= player.xp_max:
+            player.level += 1
+            player.xp -= player.xp_max
+            player.xp_max *= 1.8
+            player.hp_max += 5
+            player.hp = player.hp_max
             levelUp = True
 
-        if updated_hp <= 0:
+        if player.hp <= 0:
             died = True
-            updated_hp = updated_hp_max
-            updated_gold = int(player.gold/2)
+            player.hp = player.hp_max
+            player.gold = int(player.gold/2)
 
-        updated_player = Player(player.username,
-                                updated_player_level,
-                                updated_player_xp,
-                                updated_player_xp_max,
-                                updated_hp,
-                                updated_hp_max,
-                                updated_gold)
-        if updated_monster.hp <= 0:
-            self.monster_repository.delete_by_id(updated_monster.id)
+        damage_taken = monster_info.damage
+        xp_reward = monster_info.xp_value
+        gold_reward = monster_info.gold_value
+
+        if monster.hp <= 0:
+            self.monster_repository.delete_by_id(monster.id)
         else:
-            self.monster_repository.update_by_id(updated_monster)
-            monster_info = self.monster_info_repository.get_by_id(id)
-
-        self.player_repository.update_by_username(updated_player)
+            self.monster_repository.update_by_id(monster)
+            monster_info = self.monster_info_repository.get_by_id(monster_id)
+        self.player_repository.update_by_username(player)
 
         return {
-            "player": updated_player,
-            "monster_info": monster_info,
-            "monster_died": updated_monster.hp <= 0,
+            "player": player,
+            "damage_taken": damage_taken,
+            "gold_reward": gold_reward,
+            "xp_reward": xp_reward,
+            "monster_died": monster.hp <= 0,
             "player_died": died,
             "levelUp": levelUp
         }

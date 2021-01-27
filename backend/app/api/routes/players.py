@@ -70,15 +70,27 @@ async def rest(username: str):
 async def attack(username: str, monster_id: int) -> object:
     playerService = PlayerService()
     attack = playerService.attack(username, monster_id)
+
+    if "error" in attack:
+        error = attack["error"]
+        if error == "Unknown player":
+            return {"message": "I swear i've never seen a hero going by this name."}
+        elif error == "Unknown monster":
+            return {"message": f"{username} kept looking for the creature but it was like it never existed."}
+        return {}
+
     message = ""
-    monster_info = attack["monster_info"]
+    damage_taken = attack["damage_taken"]
+    xp_reward = attack["gold_reward"]
+    gold_reward = attack["xp_reward"]
     leveled_up = attack["levelUp"]
     if attack["player_died"]:
         message = f"{username} died fighting the terrible creature. Luckily a wizard found him and revived him, however it costed him half his purse."
     elif attack["monster_died"]:
-        message = f"{username} killed the creature and found {monster_info.gold_value} gold coins on its remains(+{monster_info.xp}xp)." + "The hero level up!" if leveled_up else ""
+        message = f"{username} killed the creature and found {gold_reward} gold coins on its remains(+{xp_reward}xp)."
+        message += "The hero level up!" if leveled_up else ""
     else:
-        message = f"{username} attacked the creature but it fought back(-{monster_info.damage}hp)."
+        message = f"{username} attacked the creature but it fought back(-{damage_taken}hp)."
     return {
         "message": message
     }
