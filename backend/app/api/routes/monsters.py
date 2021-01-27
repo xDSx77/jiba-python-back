@@ -27,6 +27,6 @@ async def get_monster_info(monster_id: int) -> Monster:
         }
 
     return {
-        "message": f"{monster_info.name} (id: {monster_info.id}) {monster_info.hp}/{monster_info.hp_max} HP. {monster_info.name} does {monster_info.damage}. Upon death, its rewarded by {monster_info.gold_value} golds and {monster_info.xp_value} experience points"
+        "message": f"{monster_info.name} (id: {monster_info.id}) {monster_info.hp}/{monster_info.hp_max} HP. {monster_info.name} does {monster_info.damage} damage. Upon death, its rewarded by {monster_info.gold_value} golds and {monster_info.xp_value} experience points"
     }
 

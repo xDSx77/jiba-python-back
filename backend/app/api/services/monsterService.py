@@ -12,4 +12,4 @@ class MonsterService:
         return self.monster_info_repository.get_all()
 
     def get_monster_info(self, monster_id: int) -> MonsterInfo:
-        return self.monster_repository.get_by_monster_id(monster_id)
+        return self.monster_info_repository.get_by_id(monster_id)
