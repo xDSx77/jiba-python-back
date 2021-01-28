@@ -603,4 +603,4 @@ INSERT INTO public.monster("id", "monster_type_id", "hp") VALUES
     (5, 2, 4),
     (6, 3, 7),
     (7, 4, 50),
-    (8, 5, 60);
+    (8, 5, 5);
