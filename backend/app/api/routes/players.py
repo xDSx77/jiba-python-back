@@ -81,10 +81,10 @@ async def attack(username: str, monster_id: int) -> Dict[str, str]:
     leveled_up = attack["levelUp"]
 
     if attack["player_died"]:
-        message = f"{username} died fighting the terrible creature. Luckily a wizard found him and revived him, however it costed him half his purse."
+        message = f"{username} died fighting the terrible creature. Luckily a wizard found him and revived him, however it cost him half his purse."
     elif attack["monster_died"]:
         message = f"{username} killed the creature and found {gold_reward} gold coins on its remains(+{xp_reward}xp)."
-        message += "The hero level up!" if leveled_up else ""
+        message += "The hero leveled up!" if leveled_up else ""
     else:
         message = f"{username} attacked the creature but it fought back(-{damage_taken}hp)."
     return {
