@@ -7,7 +7,7 @@ services:
     volumes:
       - ./backend/:/backend/
       - /var/run/docker.sock:/var/run/docker.sock
-    command: bash -c "sleep 3 && psql -h db -U postgres -w -f ./app/db/db_dump.sql && (uvicorn app.api.server:app --reload --workers 1 --host 0.0.0.0 --port 8000 & sleep 4 && pytest ./tests/)"
+    command: bash -c "sleep 3 && psql -h db -U postgres -w -f ./app/db/db_dump.sql && (uvicorn app.api.server:app --reload --workers 1 --host 0.0.0.0 --port 8000 & sleep 4 && pytest ./tests/test_monster.py && pytest ./tests/test_player.py)"
     env_file:
       - ./backend/.env
     ports:
