@@ -11,7 +11,7 @@ It's made in Python using Fast API, Docker, docker-compose and SQL Alchemy.
 
 - GET /api/players/ : List all the players and their information (name and level)
 - POST /api/players/create : Create a new player with the given username (must be specified as 'username' in the body).
-- POST /api/players/info/{username} : Get all the information about a player using its username. The information are:
+- GET /api/players/info/{username} : Get all the information about a player using its username. The information are:
   - a status message about their health points
   - level
   - gold
