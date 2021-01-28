@@ -46,10 +46,23 @@ def rest_url():
     return f"{API_URL}/players/rest/{TEST_USERNAME}"
 
 
+@pytest.fixture()
+def attack_unknown_player_url():
+    return f"{API_URL}/players/UNKNOWN/attack/2"
+
+
+@pytest.fixture()
+def attack_unknown_monster_url():
+    return f"{API_URL}/players/{TEST_USERNAME}/attack/50"
+
+
 def test_create_player(create_player_url):
     response = requests.post(create_player_url, data=json.dumps({"username": TEST_USERNAME}), headers={'Content-Type': 'application/json'})
     response_body = response.json()
     assert response_body["message"] == f"A new hero has appeared: {TEST_USERNAME}."
+
+
+def test_create_player_already_exists(create_player_url):
     response = requests.post(create_player_url, data=json.dumps({"username": TEST_USERNAME}), headers={'Content-Type': 'application/json'})
     response_body = response.json()
     assert response_body["message"] == "This hero already exists, find another username."
@@ -70,51 +83,63 @@ def test_player_info(get_player_info_url):
 
 
 def test_attack(attack_monster_one_url):
-    response = requests.get(attack_monster_one_url)
+    response = requests.post(attack_monster_one_url, headers={'Content-Type': 'application/json'})
     response_body = response.json()
     assert response_body["message"] == f"{TEST_USERNAME} attacked the creature but it fought back(-1hp)."
 
 
 def test_attack_and_kill(attack_monster_four_url):
-    response = requests.get(attack_monster_four_url)
+    response = requests.post(attack_monster_four_url, headers={'Content-Type': 'application/json'})
     response_body = response.json()
     assert response_body["message"] == f"{TEST_USERNAME} attacked the creature but it fought back(-2hp)."
-    response = requests.get(attack_monster_four_url)
+    response = requests.post(attack_monster_four_url, headers={'Content-Type': 'application/json'})
     response_body = response.json()
     assert response_body["message"] == f"{TEST_USERNAME} attacked the creature but it fought back(-2hp)."
-    response = requests.get(attack_monster_four_url)
+    response = requests.post(attack_monster_four_url, headers={'Content-Type': 'application/json'})
     response_body = response.json()
     assert response_body["message"] == f"{TEST_USERNAME} attacked the creature but it fought back(-2hp)."
-    response = requests.get(attack_monster_four_url)
+    response = requests.post(attack_monster_four_url, headers={'Content-Type': 'application/json'})
     response_body = response.json()
     assert response_body["message"] == f"{TEST_USERNAME} killed the creature and found 2 gold coins on its remains(+4xp)."
 
 
 def test_rest(rest_url):
-    response = requests.get(rest_url)
+    response = requests.post(rest_url, headers={'Content-Type': 'application/json'})
     response_body = response.json()
     assert response_body["message"] == f"Tired, {TEST_USERNAME} sat near the fire and took a nap (hp 6/10)."
 
 
 def test_attack_and_die(attack_monster_seven_url):
-    response = requests.get(attack_monster_seven_url)
+    response = requests.post(attack_monster_seven_url, headers={'Content-Type': 'application/json'})
     response_body = response.json()
     assert response_body["message"] == f"{TEST_USERNAME} died fighting the terrible creature. Luckily a wizard found him and revived him, however it cost him half his purse."
 
 
 def test_attack_and_gain_level(attack_monster_eight_url):
-    response = requests.get(attack_monster_eight_url)
+    response = requests.post(attack_monster_eight_url, headers={'Content-Type': 'application/json'})
     response_body = response.json()
     assert response_body["message"] == f"{TEST_USERNAME} attacked the creature but it fought back(-0hp)."
-    response = requests.get(attack_monster_eight_url)
+    response = requests.post(attack_monster_eight_url, headers={'Content-Type': 'application/json'})
     response_body = response.json()
     assert response_body["message"] == f"{TEST_USERNAME} attacked the creature but it fought back(-0hp)."
-    response = requests.get(attack_monster_eight_url)
+    response = requests.post(attack_monster_eight_url, headers={'Content-Type': 'application/json'})
     response_body = response.json()
     assert response_body["message"] == f"{TEST_USERNAME} attacked the creature but it fought back(-0hp)."
-    response = requests.get(attack_monster_eight_url)
+    response = requests.post(attack_monster_eight_url, headers={'Content-Type': 'application/json'})
     response_body = response.json()
     assert response_body["message"] == f"{TEST_USERNAME} attacked the creature but it fought back(-0hp)."
-    response = requests.get(attack_monster_eight_url)
+    response = requests.post(attack_monster_eight_url, headers={'Content-Type': 'application/json'})
     response_body = response.json()
     assert response_body["message"] == f"{TEST_USERNAME} killed the creature and found 2 gold coins on its remains(+100xp). The hero leveled up!"
+
+
+def test_attack_unknown_player(attack_unknown_player_url):
+    response = requests.post(attack_unknown_player_url, headers={'Content-Type': 'application/json'})
+    response_body = response.json()
+    assert response_body["message"] == f"I swear i've never seen a hero going by this name."
+
+
+def test_attack_unknown_monster(attack_unknown_monster_url):
+    response = requests.post(attack_unknown_monster_url, headers={'Content-Type': 'application/json'})
+    response_body = response.json()
+    assert response_body["message"] == f"{TEST_USERNAME} kept looking for the creature but it was like it never existed."
