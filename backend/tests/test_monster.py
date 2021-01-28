@@ -28,7 +28,7 @@ def test_get_all_monsters(get_monsters_url):
         "spider (id: 5) 4/4 HP",
         "wolf (id: 6) 7/7 HP",
         "dragon (id: 7) 50/50 HP",
-        "chicken (id: 8) 60/60 HP"
+        "chicken (id: 8) 5/5 HP"
     ]
 
 def test_get_monster_info(get_monster_info_url):
