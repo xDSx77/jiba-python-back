@@ -78,7 +78,7 @@ async def attack(username: str, monster_id: int) -> Dict[str, str]:
     damage_taken = attack["damage_taken"]
     xp_reward = attack["xp_reward"]
     gold_reward = attack["gold_reward"]
-    leveled_up = attack["levelUp"]
+    leveled_up = attack["level_up"]
 
     if attack["player_died"]:
         message = f"{username} died fighting the terrible creature. Luckily a wizard found him and revived him, however it cost him half his purse."

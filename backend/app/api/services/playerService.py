@@ -49,7 +49,7 @@ class PlayerService:
         monster.hp -= player.level
 
         died = False
-        levelUp = False
+        level_up = False
 
         if monster.hp <= 0:
             player.xp += monster_info.xp_value
@@ -57,13 +57,13 @@ class PlayerService:
         else:
             player.hp = max(player.hp - monster_info.damage, 0)
 
-        if player.xp >= player.xp_max:
+        while player.xp >= player.xp_max:
             player.level += 1
             player.xp -= player.xp_max
             player.xp_max *= 1.8
             player.hp_max += 5
             player.hp = player.hp_max
-            levelUp = True
+            level_up = True
 
         if player.hp <= 0:
             died = True
@@ -78,7 +78,6 @@ class PlayerService:
             self.monster_repository.delete_by_id(monster.id)
         else:
             self.monster_repository.update_by_id(monster)
-            # monster_info = self.monster_info_repository.get_by_id(monster_id)
 
         self.player_repository.update_by_username(player)
 
@@ -89,5 +88,5 @@ class PlayerService:
             "xp_reward": xp_reward,
             "monster_died": monster.hp <= 0,
             "player_died": died,
-            "levelUp": levelUp
+            "level_up": level_up
         }
