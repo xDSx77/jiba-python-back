@@ -106,7 +106,7 @@ def test_attack_and_kill(attack_monster_four_url):
 def test_rest(rest_url):
     response = requests.post(rest_url, headers={'Content-Type': 'application/json'})
     response_body = response.json()
-    assert response_body["message"] == f"Tired, {TEST_USERNAME} sat near the fire and took a nap (hp 6/10)."
+    assert response_body["message"] == f"Tired, {TEST_USERNAME} sat near the fire and took a nap (hp 8/10)."
 
 
 def test_attack_and_die(attack_monster_seven_url):
