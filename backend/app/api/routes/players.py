@@ -62,7 +62,7 @@ async def rest(username: str) -> Dict[str, str]:
     return {"message": f"Tired, {player.username} sat near the fire and took a nap (hp {player.hp}/{player.hp_max})."}
 
 
-@router.post("/{username}/attack/{monster_id}/")
+@router.post("/{username}/attack/{monster_id}")
 async def attack(username: str, monster_id: int) -> Dict[str, str]:
     playerService = PlayerService()
     attack = playerService.attack(username, monster_id)
@@ -84,7 +84,7 @@ async def attack(username: str, monster_id: int) -> Dict[str, str]:
         message = f"{username} died fighting the terrible creature. Luckily a wizard found him and revived him, however it cost him half his purse."
     elif attack["monster_died"]:
         message = f"{username} killed the creature and found {gold_reward} gold coins on its remains(+{xp_reward}xp)."
-        message += "The hero leveled up!" if leveled_up else ""
+        message += " The hero leveled up!" if leveled_up else ""
     else:
         message = f"{username} attacked the creature but it fought back(-{damage_taken}hp)."
     return {
