@@ -35,3 +35,9 @@ def test_get_monster_info(get_monster_info_url):
     response = requests.get(get_monster_info_url + "1", headers={'Content-Type': 'application/json'})
     response_body = response.json()
     assert response_body["message"] == "rat (id: 1) 3/3 HP. rat does 1 damage. Upon death, its rewarded by 1 golds and 3 experience points"
+
+
+def test_get_fake_monster_info(get_monster_info_url):
+    response = requests.get(get_monster_info_url + "100", headers={'Content-Type': 'application/json'})
+    response_body = response.json()
+    assert response_body["message"] == "There is now monster with id: 100"
